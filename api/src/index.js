@@ -9,17 +9,22 @@ const notesRoutes = require('./routes/notes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 connectDB();
 
-app.use(express.json());
-app.use(cookieParser());
-
+const allowedOrigins = [
+   process.env.WEB_URL ,
+   "https://notes-fresher.vercel.app"
+]
 
 app.use(cors({
-  origin: "https://notes-fresher.vercel.app",
-  credentials: true
-}));
+    origin:allowedOrigins,
+    credentials:true
+}))
+
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.get('/health', (req, res) => res.json({ ok: true }));
 
