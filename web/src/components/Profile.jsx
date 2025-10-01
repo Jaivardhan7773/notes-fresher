@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Mail, User, LogOut } from 'lucide-react';
-import { useAuthStore } from './store/useAuthStore';
+import { useAuthStore } from '../store/useAuthStore';
 
 const Profile = () => {
   const { user, logout   } = useAuthStore();

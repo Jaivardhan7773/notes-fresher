@@ -56,7 +56,7 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Logo and main nav */}
+
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
               <img
@@ -67,7 +67,9 @@ const Navbar = () => {
             </div>
 
             <div className="hidden sm:ml-6 sm:block">
+              {user && (
               <div className="flex space-x-4">
+                
                 <Link
                   to={'/'}
                   // aria-current="page"
@@ -77,43 +79,44 @@ const Navbar = () => {
                 </Link>
 
               </div>
+              )}
             </div>
           </div>
 
-          {/* Right side buttons */}
+
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 
-            {/* Profile dropdown */}
-            <div className="relative ml-3">
-              <button onClick={() => setOpenProfile(!openProfile)} className="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-                <span className="absolute -inset-1.5"></span>
-                <span className="sr-only">Open user menu</span>
-                <img
-                  src={user?.picture || "https://cdn-icons-png.flaticon.com/128/3177/3177440.png"}
-                  alt={user?.name}
-                  onError={(e) => { e.currentTarget.src = 'https://cdn-icons-png.flaticon.com/128/3177/3177440.png'; }}
-                  className="size-8 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
-                />
-              </button>
+            {user && (
+              <div className="relative ml-3">
+                <button onClick={() => setOpenProfile(!openProfile)} className="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                  <span className="absolute -inset-1.5"></span>
+                  <span className="sr-only">Open user menu</span>
+                  <img
+                    src={user.picture || "https://cdn-icons-png.flaticon.com/128/3177/3177440.png"}
+                    alt={user.name}
+                    onError={(e) => { e.currentTarget.src = 'https://cdn-icons-png.flaticon.com/128/3177/3177440.png'; }}
+                    className="size-8 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
+                  />
+                </button>
 
-              {/* Dropdown Menu */}
-              {openProfile && (
-                <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-gray-800 py-1 outline -outline-offset-1 outline-white/10 transition">
-                  <Link
-                    to={"/profile"}
-                    className="block px-4 py-2 text-sm text-gray-300 focus:bg-white/5 focus:outline-hidden"
-                  >
-                    {user?.name || "wtf"}
-                  </Link>
-                  <button
-                    onClick={logout}
-                    className="block px-4 py-2 text-sm cursor-pointer text-gray-300 focus:bg-white/5 focus:outline-hidden"
-                  >
-                    Sign out
-                  </button>
-                </div>
-              )}
-            </div>
+                {openProfile && (
+                  <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-gray-800 py-1 outline -outline-offset-1 outline-white/10 transition">
+                    <Link
+                      to={"/profile"}
+                      className="block px-4 py-2 text-sm text-gray-300 focus:bg-white/5 focus:outline-hidden"
+                    >
+                      {user.name}
+                    </Link>
+                    <button
+                      onClick={logout}
+                      className="block px-4 py-2 text-sm cursor-pointer text-gray-300 focus:bg-white/5 focus:outline-hidden"
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
