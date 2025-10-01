@@ -58,6 +58,7 @@ export const useNoteStore = create((set, get) => ({
         set({ loading: true, error: null });
         try {
             const res = await axios.put(`${API_ROOT}/api/notes/${id}`, data, { withCredentials: true });
+            toast.success("note updated")
             set(state => ({
                 notes: state.notes.map(note => (note._id === id ? res.data : note)),
                 loading: false
@@ -84,6 +85,7 @@ export const useNoteStore = create((set, get) => ({
         set({ loading: true, error: null });
         try {
             await axios.delete(`${API_ROOT}/api/notes/${id}`, { withCredentials: true });
+            toast.success("note deleted")
             set(state => ({
                 notes: state.notes.filter(note => note._id !== id),
                 loading: false

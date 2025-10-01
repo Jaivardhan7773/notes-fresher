@@ -18,9 +18,9 @@ const Home = () => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
     const created = await createNote(title, content);
-    if(created){
+    if (created) {
       setTitle('');
-    setContent('');
+      setContent('');
     }
   };
 
@@ -33,12 +33,12 @@ const Home = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!editTitle.trim() || !editContent.trim()) return;
-   const updated =  await updateNote(editingId, { title: editTitle, content: editContent });
-if(updated){
+    const updated = await updateNote(editingId, { title: editTitle, content: editContent });
+    if (updated) {
       setEditingId(null);
-    setEditTitle('');
-    setEditContent('');
-}
+      setEditTitle('');
+      setEditContent('');
+    }
   };
 
   const cancelEdit = () => {
@@ -56,21 +56,21 @@ if(updated){
   return (
     <>
       <div className="max-w-xl mx-auto p-4">
-        <h2 className="text-2xl font-bold mb-4">Notes</h2>
+        <h2 className="text-2xl text-amber-50 font-bold mb-4">Add Notes</h2>
         <form onSubmit={handleCreate} className="mb-6">
           <input
             type="text"
             placeholder="Title"
             value={title}
             onChange={e => setTitle(e.target.value)}
-            className="border p-2 rounded w-full mb-2"
+            className="border p-2 text-amber-50 rounded w-full mb-2"
             required
           />
           <textarea
             placeholder="Content"
             value={content}
             onChange={e => setContent(e.target.value)}
-            className="border p-2 rounded w-full mb-2"
+            className="border text-amber-50 p-2 rounded w-full mb-2"
             required
           />
           <button
@@ -82,10 +82,10 @@ if(updated){
           </button>
         </form>
 
-        {/* Notes List */}
         <div>
           {notes.length === 0 && <p className="text-gray-600">You have no notes yet.</p>}
-          {notes.map(note => (
+        <h2 className="text-2xl text-amber-50 font-bold mb-4">Notes</h2>
+          {notes.map(note => (<>
             <div key={note._id} className="border rounded p-4 mb-4 bg-white shadow-sm">
               {editingId === note._id ? (
                 <form onSubmit={handleUpdate}>
@@ -95,25 +95,26 @@ if(updated){
                     onChange={e => setEditTitle(e.target.value)}
                     className="border p-2 rounded w-full mb-2"
                     required
-                  />
+                    />
                   <textarea
                     value={editContent}
                     onChange={e => setEditContent(e.target.value)}
                     className="border p-2 rounded w-full mb-2"
                     required
-                  />
+                    />
+
                   <button
                     type="submit"
                     className="bg-green-600 text-white px-4 py-2 rounded mr-2"
                     disabled={loading}
-                  >
+                    >
                     {loading ? 'Updating...' : 'Update'}
                   </button>
                   <button
                     type="button"
                     onClick={cancelEdit}
                     className="bg-gray-400 text-white px-4 py-2 rounded"
-                  >
+                    >
                     Cancel
                   </button>
                 </form>
@@ -121,22 +122,29 @@ if(updated){
                 <>
                   <h3 className="font-semibold text-lg mb-1">{note.title}</h3>
                   <p className="mb-2">{note.content}</p>
+                  <p className="text-sm text-gray-500 mb-2">
+                    Created: {new Date(note.createdAt).toLocaleString()}
+                    {note.updatedAt && note.updatedAt !== note.createdAt && (
+                      <> | Updated: {new Date(note.updatedAt).toLocaleString()}</>
+                    )}
+                  </p>
                   <button
                     onClick={() => startEdit(note)}
                     className="bg-yellow-400 text-white px-3 py-1 rounded mr-2"
-                  >
+                    >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(note._id)}
                     className="bg-red-600 text-white px-3 py-1 rounded"
                     disabled={loading}
-                  >
+                    >
                     Delete
                   </button>
                 </>
               )}
             </div>
+              </>
           ))}
         </div>
       </div>
