@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
+const auth = require('../middleware/auth');
 const router = express.Router();
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -24,7 +25,6 @@ router.post('/google', async (req, res) => {
     });
     const payload = ticket.getPayload();
 
-    // Verify email is verified by Google
     if (!payload.email_verified) {
       return res.status(401).json({
         error: { code: 'EMAIL_NOT_VERIFIED', message: 'Google email not verified' }
@@ -40,7 +40,7 @@ router.post('/google', async (req, res) => {
 
     const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-    // Set httpOnly cookie
+
     res.cookie('token', token, {
       httpOnly: true,
       sameSite: 'lax',
@@ -57,11 +57,8 @@ router.post('/google', async (req, res) => {
   }
 });
 
-/**
- * GET /auth/me
- * Returns user from JWT (cookie or Authorization header)
- */
-router.get('/me', (req, res) => {
+
+router.get('/me', auth , (req, res) => {
   // lightweight check for cookie first
   const token = req.cookies?.token || (req.header('Authorization')?.replace('Bearer ', ''));
   if (!token) return res.status(401).json({ error: 'UNAUTHENTICATED' });
