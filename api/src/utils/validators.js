@@ -8,7 +8,7 @@ const createNoteSchema = Joi.object({
 const updateNoteSchema = Joi.object({
   title: Joi.string().min(3).max(120).optional(),
   content: Joi.string().allow('').max(2000).optional()
-}).min(1); // at least one field required
+}).min(1);
 
 module.exports = {
   createNoteSchema,

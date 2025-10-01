@@ -5,7 +5,6 @@ const { createNoteSchema, updateNoteSchema } = require('../utils/validators');
 
 const router = express.Router();
 
-// create note
 router.post('/', auth, async (req, res, next) => {
   try {
     const { error, value } = createNoteSchema.validate(req.body, { abortEarly: false });
@@ -18,7 +17,6 @@ router.post('/', auth, async (req, res, next) => {
   }
 });
 
-// list notes for signed-in user
 router.get('/', auth, async (req, res, next) => {
   try {
     const notes = await Note.find({ userId: req.user.sub }).sort({ createdAt: -1 });
@@ -28,7 +26,6 @@ router.get('/', auth, async (req, res, next) => {
   }
 });
 
-// get one note (must belong to user)
 router.get('/:id', auth, async (req, res, next) => {
   try {
     const note = await Note.findById(req.params.id);
@@ -40,7 +37,6 @@ router.get('/:id', auth, async (req, res, next) => {
   }
 });
 
-// update note (partial)
 router.put('/:id', auth, async (req, res, next) => {
   try {
     const { error, value } = updateNoteSchema.validate(req.body, { abortEarly: false });
@@ -60,7 +56,6 @@ router.put('/:id', auth, async (req, res, next) => {
   }
 });
 
-// delete note
 router.delete('/:id', auth, async (req, res, next) => {
   try {
     const note = await Note.findById(req.params.id);
