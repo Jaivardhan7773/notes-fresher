@@ -15,27 +15,11 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
-const WEB_URL = (process.env.WEB_URL || '').replace(/\/+$/, '');
-if (!WEB_URL) {
-  throw new Error('WEB_URL is required (e.g. https://notes-fresher.vercel.app)');
-}
 
-
-const corsOptions = {
-  origin(origin, cb) {
-    if (!origin) return cb(null, true);
-
-    const o = origin.replace(/\/+$/, '');
-    if (o === WEB_URL) return cb(null, true);
-    return cb(new Error('Not allowed by CORS'));
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['Set-Cookie'],
-};
-
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: "https://notes-fresher.vercel.app",
+  credentials: true
+}));
 
 app.get('/health', (req, res) => res.json({ ok: true }));
 
