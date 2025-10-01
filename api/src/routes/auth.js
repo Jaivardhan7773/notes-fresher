@@ -43,10 +43,11 @@ router.post('/google', async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
+
 
     res.json({ ok: true, user });
   } catch (err) {
@@ -58,7 +59,7 @@ router.post('/google', async (req, res) => {
 });
 
 
-router.get('/me', auth , (req, res) => {
+router.get('/me', auth, (req, res) => {
   // lightweight check for cookie first
   const token = req.cookies?.token || (req.header('Authorization')?.replace('Bearer ', ''));
   if (!token) return res.status(401).json({ error: 'UNAUTHENTICATED' });
