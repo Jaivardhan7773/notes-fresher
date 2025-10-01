@@ -100,7 +100,7 @@ npm run dev
 ![login](https://i.ibb.co/8Lt5NV19/Screenshot-2025-10-01-212658.png)
 
 ### Delete Note Confirmation  
-![Edit Note Inline](https://ibb.co/s9zFn5JJ)
+![Delete Note Confirmation ](https://i.ibb.co/sdGNH2NP/Screenshot-2025-10-01-213102.png)
 
 ---
 
